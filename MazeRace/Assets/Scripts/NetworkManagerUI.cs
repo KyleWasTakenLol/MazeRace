@@ -3,15 +3,15 @@ using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine.SceneManagement;
 using TMPro;
-
 public class NetworkManagerUI : MonoBehaviour
 {
     public TMP_InputField ipInput;
+    public NetworkManager networkManager;
 
     public void OnHostClicked()
     {
-        NetworkManager.Singleton.StartHost();
-        NetworkManager.Singleton.SceneManager.LoadScene(
+        networkManager.StartHost();
+        networkManager.SceneManager.LoadScene(
             "GameScene", LoadSceneMode.Single);
     }
 
@@ -23,10 +23,10 @@ public class NetworkManagerUI : MonoBehaviour
             ip = "127.0.0.1";
         }
 
-        UnityTransport transport = NetworkManager.Singleton
+        UnityTransport transport = networkManager
             .GetComponent<UnityTransport>();
         transport.SetConnectionData(ip, 7777);
 
-        NetworkManager.Singleton.StartClient();
+        networkManager.StartClient();
     }
 }

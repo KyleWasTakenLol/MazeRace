@@ -1427,6 +1427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NetworkManagerUI
   ipInput: {fileID: 925700619}
+  networkManager: {fileID: 2048398627}
 --- !u!4 &1306372423
 Transform:
   m_ObjectHideFlags: 0
@@ -1744,7 +1745,7 @@ MonoBehaviour:
   NetworkManagerExpanded: 0
   NetworkConfig:
     ProtocolVersion: 0
-    NetworkTransport: {fileID: 0}
+    NetworkTransport: {fileID: 2048398626}
     PlayerPrefab: {fileID: 166553049607331786, guid: e5e5e9a8e03ea174b904ea2d2bfc85e0, type: 3}
     Prefabs:
       NetworkPrefabsLists:
