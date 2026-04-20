@@ -3,21 +3,28 @@ using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine.SceneManagement;
 using TMPro;
+
 public class NetworkManagerUI : MonoBehaviour
 {
     public TMP_InputField ipInput;
     public NetworkManager networkManager;
 
-
-    public void OpenHighScores()
-{
-    SceneManager.LoadScene("HighScores");
-}
     public void OnHostClicked()
     {
-        networkManager.StartHost();
-        networkManager.SceneManager.LoadScene(
-            "GameScene", LoadSceneMode.Single);
+        UnityTransport transport = networkManager.GetComponent<UnityTransport>();
+        transport.SetConnectionData("127.0.0.1", 7778);
+
+        bool started = networkManager.StartHost();
+
+        if (started)
+        {
+            networkManager.SceneManager.LoadScene("GameScene",
+                LoadSceneMode.Single);
+        }
+        else
+        {
+            Debug.LogError("Failed to start host!");
+        }
     }
 
     public void OnClientClicked()
@@ -28,10 +35,14 @@ public class NetworkManagerUI : MonoBehaviour
             ip = "127.0.0.1";
         }
 
-        UnityTransport transport = networkManager
-            .GetComponent<UnityTransport>();
-        transport.SetConnectionData(ip, 7777);
+        UnityTransport transport = networkManager.GetComponent<UnityTransport>();
+        transport.SetConnectionData(ip, 7778);
 
         networkManager.StartClient();
+    }
+
+    public void OpenHighScores()
+    {
+        SceneManager.LoadScene("HighScores");
     }
 }
