@@ -1,13 +1,34 @@
 # Maze Race
 
-A competitive multiplayer game built in Unity where 2 players race through an arena 
-to collect coins before their opponent. The game rewards both speed and strategy.
+A competitive multiplayer and solo maze game built in Unity where players 
+race to collect coins. The multiplayer mode pits two players against each 
+other in a maze, while solo mode challenges a single player to collect all 
+coins as fast as possible.
 
 ## Built With
 
 - Unity 6 (6000.3.3f1)
 - Unity Netcode for GameObjects
+- SQLite (via sqlite-net-pcl)
 - C#
+
+## How to Play
+
+### Controls
+- **WASD** — Move player
+- **Escape** — Open/Close pause menu
+
+### Multiplayer Mode
+- First player clicks **Host Game**
+- Second player enters the host's IP address and clicks **Join Game**
+- Both players load into the maze
+- Collect coins to earn points
+- First player to reach 150 points wins
+
+### Solo Mode
+- Click **Solo Play** from the main menu
+- Navigate the maze and collect all 31 coins as fast as possible
+- Your completion time is saved to the solo leaderboard
 
 ## Setup Instructions
 
@@ -16,6 +37,7 @@ to collect coins before their opponent. The game rewards both speed and strategy
 3. Navigate to the cloned folder and open it
 4. Let Unity import all assets and packages
 5. Open the **MainMenu** scene from `Assets/Scenes/`
+6. Press **Play** to test in the editor
 
 ## How to Test Multiplayer
 
@@ -26,28 +48,48 @@ to collect coins before their opponent. The game rewards both speed and strategy
 5. In the **.exe** click **Join Game** (leave IP blank for localhost)
 6. Both instances should load into the game scene
 
-To test over a network, enter the host machine's local IP address 
-in the IP field before clicking Join Game.
+To test over a local network, enter the host machine's IP address in the 
+IP field before clicking Join Game.
 
-## Key Scripts
+## Scene Structure
 
-| Script | Location | Purpose |
-|--------|----------|---------|
-| GameManager.cs | Assets/Scripts/ | Singleton managing score and game events |
-| PlayerController.cs | Assets/Scripts/ | Networked player movement |
-| CoinPickup.cs | Assets/Scripts/ | Coin collection and score delegation |
-| CoinSpawner.cs | Assets/Scripts/ | Spawns coins at scene start on host |
-| UIManager.cs | Assets/Scripts/ | Subscribes to delegates and updates HUD |
-| NetworkManagerUI.cs | Assets/Scripts/ | Host/client connection logic |
+| Scene | Description |
+|-------|-------------|
+| MainMenu | Title screen with Solo, Host, and Join buttons |
+| GameScene | Multiplayer maze — first to 150 points wins |
+| SoloMode | Solo maze — collect all 31 coins as fast as possible |
+| GameOver | Submit your name and score to the leaderboard |
+| HighScores | View top 5 scores for multiplayer or solo mode |
 
-## Technical Requirements Implemented
+## Technical Requirements
 
-- **Singleton Pattern** — GameManager persists across scenes via DontDestroyOnLoad
-- **Delegate Usage** — onScoreChanged and onGameOver events broadcast game state changes
-- **Multiplayer** — Unity Netcode synchronizes player movement and coin collection
+| Requirement | Implementation | Location |
+|-------------|---------------|----------|
+| Singleton | GameManager, AudioManager, DatabaseManager, CoinPoolManager | Assets/Scripts/ |
+| Delegate | onScoreChanged, onGameOver events in GameManager | GameManager.cs |
+| Object Pool | CoinPoolManager reuses coin GameObjects between rounds | CoinPoolManager.cs |
+| Database | SQLite stores multiplayer and solo high scores | DatabaseManager.cs |
+| Save/Load | High scores persist between sessions via SQLite | DatabaseManager.cs |
+| Audio | AudioManager handles background music and coin SFX | AudioManager.cs |
 
-## Known Issues / In Progress
+## Project Structure
+Assets/
 
-- Maze layout is a placeholder arena — full maze coming in final submission
-- Game over condition triggers when all coins are collected but results screen not yet implemented
-- Player spawning at specific spawn points needs refinement
+├── Audio/          # Background music and sound effects
+
+├── Prefabs/        # Player and Coin prefabs
+
+├── Scenes/         # All game scenes
+
+├── Scripts/        # All C# scripts
+
+└── UI/             # UI assets
+
+## Technologies Used
+
+- Unity 6 (6000.3.3f1)
+- Unity Netcode for GameObjects
+- Unity Transport
+- SQLite via NuGet (sqlite-net-pcl)
+- TextMeshPro
+- C#
