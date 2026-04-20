@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
 using TMPro;
-
 public class GameOverController : MonoBehaviour
 {
     public TextMeshProUGUI winnerText;
@@ -31,6 +31,10 @@ public class GameOverController : MonoBehaviour
 
     public void OnPlayAgain()
     {
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.Shutdown();
+        }
         GameManager.Instance.ResetGame();
         SceneManager.LoadScene("MainMenu");
     }
