@@ -16,10 +16,13 @@ public class UIManager : MonoBehaviour
     }
 
     void OnDisable()
+{
+    if (GameManager.Instance != null)
     {
         GameManager.Instance.onScoreChanged -= UpdateScore;
         GameManager.Instance.onGameOver -= HandleGameOver;
     }
+}
 
     void Start()
     {
