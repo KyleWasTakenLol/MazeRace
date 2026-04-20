@@ -36,9 +36,11 @@ public class UIManager : MonoBehaviour
 
     void UpdateScore(int newScore)
     {
-        scoreText.text = "Points: " + newScore + " / 150";
+        if (GameManager.Instance.CurrentMode == GameMode.Solo)
+            scoreText.text = "Points: " + newScore;
+        else
+            scoreText.text = "Points: " + newScore + " / 150";
     }
-
     void HandleGameOver(string message)
     {
         timerRunning = false;

@@ -1,6 +1,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+
+public enum GameMode
+{
+    Multiplayer,
+    Solo
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -11,6 +18,7 @@ public class GameManager : MonoBehaviour
     private int score = 0;
     private const int WIN_CONDITION = 150;
     private float startTime;
+    public GameMode CurrentMode { get; private set; }
 
     void Awake()
     {
@@ -28,12 +36,17 @@ public class GameManager : MonoBehaviour
         startTime = Time.time;
     }
 
+    public void SetMode(GameMode mode)
+    {
+        CurrentMode = mode;
+    }
+
     public void AddScore(int points)
     {
         score += points;
         onScoreChanged?.Invoke(score);
 
-        if (score >= WIN_CONDITION)
+        if (CurrentMode == GameMode.Multiplayer && score >= WIN_CONDITION)
         {
             TriggerGameOver("You Win!");
         }

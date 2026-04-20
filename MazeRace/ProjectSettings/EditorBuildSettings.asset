@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/GameScene.unity
     guid: 8c299848847158745b62a30a3fb5000c
   - enabled: 1
+    path: Assets/Scenes/SoloMode.unity
+    guid: 9ff3daac3da866842b3ca1b170636d8d
+  - enabled: 1
     path: Assets/Scenes/GameOver.unity
     guid: e9a6acfeb79a84d4fb1efea3e7a726ee
   - enabled: 1

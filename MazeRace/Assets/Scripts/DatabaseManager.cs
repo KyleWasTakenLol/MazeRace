@@ -12,6 +12,14 @@ public class HighScore
     public float CompletionTime { get; set; }
 }
 
+public class SoloHighScore
+{
+    [PrimaryKey, AutoIncrement]
+    public int Id { get; set; }
+    public string PlayerName { get; set; }
+    public float CompletionTime { get; set; }
+}
+
 public class DatabaseManager : MonoBehaviour
 {
     public static DatabaseManager Instance { get; private set; }
@@ -42,9 +50,11 @@ public class DatabaseManager : MonoBehaviour
     {
         dbConnection = new SQLiteConnection(dbPath);
         dbConnection.CreateTable<HighScore>();
+        dbConnection.CreateTable<SoloHighScore>();
         Debug.Log("Database initialized at: " + dbPath);
     }
 
+    // Multiplayer
     public void SaveHighScore(string playerName, float completionTime)
     {
         HighScore newScore = new HighScore
@@ -52,14 +62,33 @@ public class DatabaseManager : MonoBehaviour
             PlayerName = playerName,
             CompletionTime = completionTime
         };
-
         dbConnection.Insert(newScore);
-        Debug.Log("Score saved: " + playerName + " - " + completionTime + "s");
+        Debug.Log("Multiplayer score saved: " + playerName + " - " + completionTime + "s");
     }
 
     public List<HighScore> GetTopHighScores(int count)
     {
         return dbConnection.Table<HighScore>()
+            .OrderBy(score => score.CompletionTime)
+            .Take(count)
+            .ToList();
+    }
+
+    // Solo
+    public void SaveSoloHighScore(string playerName, float completionTime)
+    {
+        SoloHighScore newScore = new SoloHighScore
+        {
+            PlayerName = playerName,
+            CompletionTime = completionTime
+        };
+        dbConnection.Insert(newScore);
+        Debug.Log("Solo score saved: " + playerName + " - " + completionTime + "s");
+    }
+
+    public List<SoloHighScore> GetTopSoloHighScores(int count)
+    {
+        return dbConnection.Table<SoloHighScore>()
             .OrderBy(score => score.CompletionTime)
             .Take(count)
             .ToList();

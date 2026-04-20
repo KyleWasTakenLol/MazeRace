@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class HighScoresDisplay : MonoBehaviour
 {
     public TextMeshProUGUI[] scoreTexts;
+    public TextMeshProUGUI titleText;
 
     void Start()
     {
@@ -13,14 +14,26 @@ public class HighScoresDisplay : MonoBehaviour
 
     void DisplayHighScores()
     {
+        if (GameManager.Instance.CurrentMode == GameMode.Solo)
+        {
+            titleText.text = "Solo High Scores";
+            DisplaySoloScores();
+        }
+        else
+        {
+            titleText.text = "Multiplayer High Scores";
+            DisplayMultiplayerScores();
+        }
+    }
+
+    void DisplayMultiplayerScores()
+    {
         List<HighScore> topScores = DatabaseManager.Instance.GetTopHighScores(5);
 
         if (topScores.Count == 0)
         {
             for (int i = 0; i < scoreTexts.Length; i++)
-            {
                 scoreTexts[i].text = (i + 1) + ". No scores yet!";
-            }
             return;
         }
 
@@ -29,8 +42,33 @@ public class HighScoresDisplay : MonoBehaviour
             if (i < topScores.Count)
             {
                 HighScore score = topScores[i];
-                int rank = i + 1;
-                scoreTexts[i].text = rank + ". " + score.PlayerName +
+                scoreTexts[i].text = (i + 1) + ". " + score.PlayerName +
+                                     " - " + score.CompletionTime.ToString("F1") + "s";
+            }
+            else
+            {
+                scoreTexts[i].text = (i + 1) + ". ---";
+            }
+        }
+    }
+
+    void DisplaySoloScores()
+    {
+        List<SoloHighScore> topScores = DatabaseManager.Instance.GetTopSoloHighScores(5);
+
+        if (topScores.Count == 0)
+        {
+            for (int i = 0; i < scoreTexts.Length; i++)
+                scoreTexts[i].text = (i + 1) + ". No scores yet!";
+            return;
+        }
+
+        for (int i = 0; i < scoreTexts.Length; i++)
+        {
+            if (i < topScores.Count)
+            {
+                SoloHighScore score = topScores[i];
+                scoreTexts[i].text = (i + 1) + ". " + score.PlayerName +
                                      " - " + score.CompletionTime.ToString("F1") + "s";
             }
             else

@@ -11,6 +11,9 @@ public class NetworkManagerUI : MonoBehaviour
 
     public void OnHostClicked()
     {
+        GameManager.Instance.SetMode(GameMode.Multiplayer);
+        GameManager.Instance.ResetGame();
+
         UnityTransport transport = networkManager.GetComponent<UnityTransport>();
         transport.SetConnectionData("127.0.0.1", 7778);
 
@@ -29,6 +32,9 @@ public class NetworkManagerUI : MonoBehaviour
 
     public void OnClientClicked()
     {
+        GameManager.Instance.SetMode(GameMode.Multiplayer);
+        GameManager.Instance.ResetGame();
+
         string ip = ipInput.text;
         if (string.IsNullOrEmpty(ip))
         {
@@ -39,6 +45,13 @@ public class NetworkManagerUI : MonoBehaviour
         transport.SetConnectionData(ip, 7778);
 
         networkManager.StartClient();
+    }
+
+    public void OnSoloClicked()
+    {
+        GameManager.Instance.SetMode(GameMode.Solo);
+        GameManager.Instance.ResetGame();
+        SceneManager.LoadScene("SoloMode");
     }
 
     public void OpenHighScores()
