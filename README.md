@@ -74,6 +74,7 @@ IP field before clicking Join Game.
 
 ## Project Structure
 Assets/
+
 ├── Audio/          # Background music and sound effects
 
 ├── Prefabs/        # Player and Coin prefabs
