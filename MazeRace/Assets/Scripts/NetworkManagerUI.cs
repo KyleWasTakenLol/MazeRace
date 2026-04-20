@@ -8,6 +8,11 @@ public class NetworkManagerUI : MonoBehaviour
     public TMP_InputField ipInput;
     public NetworkManager networkManager;
 
+
+    public void OpenHighScores()
+{
+    SceneManager.LoadScene("HighScores");
+}
     public void OnHostClicked()
     {
         networkManager.StartHost();

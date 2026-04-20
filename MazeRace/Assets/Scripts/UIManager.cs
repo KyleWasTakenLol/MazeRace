@@ -12,13 +12,13 @@ public class UIManager : MonoBehaviour
     void OnEnable()
     {
         GameManager.Instance.onScoreChanged += UpdateScore;
-        GameManager.Instance.onGameOver += StopTimer;
+        GameManager.Instance.onGameOver += HandleGameOver;
     }
 
     void OnDisable()
     {
         GameManager.Instance.onScoreChanged -= UpdateScore;
-        GameManager.Instance.onGameOver -= StopTimer;
+        GameManager.Instance.onGameOver -= HandleGameOver;
     }
 
     void Start()
@@ -30,18 +30,18 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         if (!timerRunning) return;
-
         elapsedTime += Time.deltaTime;
         timerText.text = "Time: " + Mathf.FloorToInt(elapsedTime) + "s";
     }
 
     void UpdateScore(int newScore)
     {
-        scoreText.text = "Score: " + newScore;
+        scoreText.text = "Points: " + newScore + " / 150";
     }
 
-    void StopTimer()
+    void HandleGameOver(string message)
     {
         timerRunning = false;
+        scoreText.text = message;
     }
 }

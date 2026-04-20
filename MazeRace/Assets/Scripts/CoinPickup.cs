@@ -1,21 +1,18 @@
 using UnityEngine;
-using Unity.Netcode;
 
-public class CoinPickup : NetworkBehaviour
+public class CoinPickup : MonoBehaviour
 {
+    private bool collected = false;
+
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (!IsServer) return;
+        if (collected) return;
 
         if (other.CompareTag("Player"))
         {
+            collected = true;
             GameManager.Instance.AddScore(10);
-            DespawnCoin();
+            CoinPoolManager.Instance.ReturnCoin(gameObject);
         }
-    }
-
-    void DespawnCoin()
-    {
-        GetComponent<NetworkObject>().Despawn();
     }
 }
