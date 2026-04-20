@@ -75,9 +75,13 @@ IP field before clicking Join Game.
 ## Project Structure
 Assets/
 ├── Audio/          # Background music and sound effects
+
 ├── Prefabs/        # Player and Coin prefabs
+
 ├── Scenes/         # All game scenes
+
 ├── Scripts/        # All C# scripts
+
 └── UI/             # UI assets
 
 ## Technologies Used
